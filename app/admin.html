@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Participants for Good</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css?v=4">
+<script src="app.js?v=2" defer></script>
+</head>
+<body>
+
+<div class="appbar">
+  <div class="wrap appbar-in">
+    <a class="logo" href="index.html"><img src="../logo.svg" alt="">Participants for Good</a>
+    <span class="portal-badge">PFG Admin</span>
+    <nav>
+      <a href="participant.html">Participant</a>
+      <a href="researcher.html">Researcher</a>
+      <a href="nonprofit.html">Nonprofit</a>
+      <a class="active" href="admin.html">Console</a>
+      <a href="panel.html">Panel</a>
+      <a href="terms.html">Terms</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap page">
+  <div class="page-head">
+    <h1>Console</h1>
+    <span class="demo-note">Prototype · demo data only</span>
+  </div>
+  <p class="page-sub">Run the panel, move the money, and keep every promise the marketing site makes.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="num">1,942</div><div class="lbl">Active participants</div></div>
+    <div class="stat"><div class="num green">$14,660</div><div class="lbl">To causes this year</div></div>
+    <div class="stat"><div class="num gold">23</div><div class="lbl">Nonprofit partners</div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="stack">
+      <div class="card">
+        <h2>Study approval queue</h2>
+        <p class="hint">Ethics checklist, fair-incentive check, and nonprofit brand consents before anything fields.</p>
+        <div class="rows">
+          <div class="row">
+            <div>
+              <div class="main">Telehealth onboarding interviews</div>
+              <div class="meta">HealthCo · 16 sessions · consent ✓ · incentive $70 ✓ · recording flagged</div>
+            </div>
+            <button class="btn btn-blue btn-sm js-approve">Approve</button>
+          </div>
+          <div class="row">
+            <div>
+              <div class="main">Budgeting app diary study</div>
+              <div class="meta">Finlee · 10 sessions · consent ✓ · incentive $120 ✓</div>
+            </div>
+            <button class="btn btn-blue btn-sm js-approve">Approve</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Panel health</h2>
+        <p class="hint">Composition vs. mission targets — are we reaching who panels miss?</p>
+        <div class="comp">
+          <div class="comp-lbl"><span>Household income under $50k</span><b>34% / 40% target</b></div>
+          <div class="meter"><i style="width:85%"></i></div>
+        </div>
+        <div class="comp">
+          <div class="comp-lbl"><span>Disabled or assistive-tech users</span><b>9% / 10% target</b></div>
+          <div class="meter"><i style="width:90%"></i></div>
+        </div>
+        <div class="comp">
+          <div class="comp-lbl"><span>Rural</span><b>11% / 20% target</b></div>
+          <div class="meter"><i class="gold" style="width:55%"></i></div>
+        </div>
+        <div class="comp">
+          <div class="comp-lbl"><span>First-time participants</span><b>57% / 50% target</b></div>
+          <div class="meter"><i style="width:100%"></i></div>
+        </div>
+        <div class="goodnote">🌾 Rural is under target — 3 rural-focused partner prospects in the pipeline.</div>
+      </div>
+
+      <div class="card">
+        <h2>Participant panel</h2>
+        <p class="hint">Filter the panel, assign people to projects, and push incentives.</p>
+        <a class="btn btn-blue btn-sm" href="panel.html">Open the panel →</a>
+      </div>
+
+      <div class="card">
+        <h2>Fatigue watch</h2>
+        <p class="hint">Nobody gets over-asked. These folks are near their quarterly cap.</p>
+        <div class="rows">
+          <div class="row"><div class="main">D. Okafor</div><span class="chip gold">5 of 6</span></div>
+          <div class="row"><div class="main">R. Sandoval</div><span class="chip gold">5 of 6</span></div>
+          <div class="row"><div class="main">J. Tran</div><span class="chip coral">6 of 6 — resting</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="card">
+        <h2>Partner pipeline</h2>
+        <p class="hint">Participant-suggested nonprofits feed this queue.</p>
+        <div class="pipeline">
+          <div class="pipe-col">
+            <h3>Prospect</h3>
+            <div class="pipe-card">Prairie Health Collective<div class="meta">suggested by 4 participants</div></div>
+            <div class="pipe-card">Rural Digital Access Fund<div class="meta">outreach drafted</div></div>
+          </div>
+          <div class="pipe-col">
+            <h3>Verifying</h3>
+            <div class="pipe-card">Open Door Crisis Line<div class="meta">EIN check in progress</div></div>
+          </div>
+          <div class="pipe-col">
+            <h3>Active</h3>
+            <div class="pipe-card">Riverside Youth Alliance<div class="meta">$2,340 this quarter</div></div>
+            <div class="pipe-card">Eastside Food Pantry<div class="meta">$1,105 this quarter</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>July payout batch</h2>
+        <p class="hint">Monthly contributions to verified partners, reconciled against the ledger.</p>
+        <div class="rows">
+          <div class="row"><div class="main">12 nonprofits</div><span class="amt">$4,120</span></div>
+          <div class="row"><div class="main">Ledger check</div><span class="chip green">Balanced ✓</span></div>
+        </div>
+        <button class="btn btn-green" id="runBatch" style="margin-top:14px;">Send July payouts</button>
+      </div>
+
+      <div class="card">
+        <h2>Engagement</h2>
+        <p class="hint">Every message counts against a frequency cap — annoyance is a budget too.</p>
+        <div class="rows">
+          <div class="row">
+            <div><div class="main">Quarterly impact digest</div><div class="meta">All audiences · from live ledger data</div></div>
+            <button class="btn btn-gold btn-sm" data-hearts data-toast="Digest queued — 2,093 people are about to feel good 💛">Send</button>
+          </div>
+          <div class="row">
+            <div><div class="main">Re-engage dormant participants</div><div class="meta">214 people · 90+ days quiet</div></div>
+            <button class="btn btn-ghost btn-sm" data-toast="Campaign drafted — review before sending">Draft</button>
+          </div>
+          <div class="row">
+            <div><div class="main">Milestone notes</div><div class="meta">6 participants crossed $100 to their cause</div></div>
+            <button class="btn btn-gold btn-sm" data-hearts data-toast="Milestone notes sent 💚">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.js-approve').forEach(btn => {
+    btn.addEventListener('click', () => {
+      PFG.hearts(btn, 6);
+      const chip = document.createElement('span');
+      chip.className = 'chip green';
+      chip.textContent = 'Approved ✓';
+      btn.replaceWith(chip);
+      PFG.toast('Study approved — participants get paid fairly, causes get funded ✓');
+    });
+  });
+
+  const batch = document.getElementById('runBatch');
+  batch.addEventListener('click', () => {
+    PFG.hearts(batch, 10);
+    batch.textContent = 'Sent — $4,120 to 12 nonprofits ✓';
+    batch.disabled = true;
+    PFG.toast('Payouts on their way — this is the whole point 💚');
+  });
+});
+</script>
+
+</body>
+</html>

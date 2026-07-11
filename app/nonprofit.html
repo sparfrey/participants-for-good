@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nonprofit — Participants for Good</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css?v=4">
+<script src="app.js?v=2" defer></script>
+</head>
+<body>
+
+<div class="appbar">
+  <div class="wrap appbar-in">
+    <a class="logo" href="index.html"><img src="../logo.svg" alt="">Participants for Good</a>
+    <span class="portal-badge">Nonprofit</span>
+    <nav>
+      <a href="participant.html">Participant</a>
+      <a href="researcher.html">Researcher</a>
+      <a class="active" href="nonprofit.html">Dashboard</a>
+      <a href="admin.html">Admin</a>
+      <a href="terms.html#nonprofits">Terms</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap page">
+  <div class="page-head">
+    <h1>Riverside Youth Alliance</h1>
+    <span class="demo-note">Prototype · demo data only</span>
+  </div>
+  <p class="page-sub">Your supporters' voices, funding your mission — nothing for you to run.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="num">128</div><div class="lbl">Supporters joined</div></div>
+    <div class="stat"><div class="num">57</div><div class="lbl">Sessions completed</div></div>
+    <div class="stat"><div class="num green">$2,340</div><div class="lbl">Raised this quarter</div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="stack">
+      <div class="card">
+        <h2>Funds by study</h2>
+        <p class="hint">A contribution from every session your supporters complete.</p>
+        <div class="rows">
+          <div class="row">
+            <div><div class="main">Mobile banking usability</div><div class="meta">14 sessions · May</div></div>
+            <span class="amt">+$560</span>
+          </div>
+          <div class="row">
+            <div><div class="main">Transit app accessibility</div><div class="meta">22 sessions · June</div></div>
+            <span class="amt">+$880</span>
+          </div>
+          <div class="row">
+            <div><div class="main">Benefits portal navigation</div><div class="meta">21 sessions · June</div></div>
+            <span class="amt">+$900</span>
+          </div>
+        </div>
+        <div class="goodnote">💚 That's 57 supporters who got paid for their time — and chose you.</div>
+      </div>
+
+      <div class="card">
+        <h2>Payout statements</h2>
+        <p class="hint">Paid monthly by bank transfer. The annual summary is board-packet ready.</p>
+        <div class="rows">
+          <div class="row">
+            <div><div class="main">June 2026</div><div class="meta">Transfer · statement #2026-06</div></div>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <span class="amt">$1,780</span><span class="chip green">Paid</span>
+            </div>
+          </div>
+          <div class="row">
+            <div><div class="main">May 2026</div><div class="meta">Transfer · statement #2026-05</div></div>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <span class="amt">$560</span><span class="chip green">Paid</span>
+            </div>
+          </div>
+          <div class="row">
+            <div><div class="main">July 2026 (accruing)</div><div class="meta">Pays out Aug 1</div></div>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <span class="amt">$310</span><span class="chip gold">Accruing</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="card">
+        <h2>Grow your supporters</h2>
+        <p class="hint">Share your link — supporters sign themselves up and pick you as their cause. That's the whole job.</p>
+        <label class="field"><span>Your invite link</span>
+          <input type="text" readonly value="participantsforgood.org/j/riverside-youth" id="inviteLink">
+        </label>
+        <button class="btn btn-green btn-sm" id="copyLink">Copy invite link</button>
+        <div class="goodnote">🌱 12 supporters joined from your link this month.</div>
+      </div>
+
+      <div class="card">
+        <h2>Your protections</h2>
+        <p class="hint">You control how your community is reached. Change these anytime.</p>
+        <div class="checks-row" style="flex-direction:column; gap:10px;">
+          <label><input type="checkbox" checked class="js-pref"> Block alcohol &amp; gambling studies</label>
+          <label><input type="checkbox" checked class="js-pref"> Block tobacco &amp; vaping studies</label>
+          <label><input type="checkbox" class="js-pref"> Block political research</label>
+          <label><input type="checkbox" checked class="js-pref"> Require approval before our name appears in a study</label>
+        </div>
+        <div class="goodnote">✋ Your supporters are always consent-first, always paid, never over-asked.</div>
+      </div>
+
+      <div class="card">
+        <h2>Board summary</h2>
+        <p class="hint">Everything above, formatted for your next board meeting.</p>
+        <button class="btn btn-gold btn-sm" data-hearts data-toast="Annual summary downloaded — go show it off 💛">Download annual summary</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('copyLink').addEventListener('click', (e) => {
+    const link = document.getElementById('inviteLink');
+    link.select();
+    try { navigator.clipboard.writeText(link.value); } catch (err) { document.execCommand('copy'); }
+    PFG.hearts(e.target, 7);
+    PFG.toast('Link copied — thank you for sharing 💚');
+  });
+  document.querySelectorAll('.js-pref').forEach(cb => {
+    cb.addEventListener('change', () => PFG.toast('Preference saved — we’ll respect it ✓'));
+  });
+});
+</script>
+
+</body>
+</html>

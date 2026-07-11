@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Researcher — Participants for Good</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css?v=4">
+<script src="app.js?v=2" defer></script>
+</head>
+<body>
+
+<div class="appbar">
+  <div class="wrap appbar-in">
+    <a class="logo" href="index.html"><img src="../logo.svg" alt="">Participants for Good</a>
+    <span class="portal-badge">Researcher</span>
+    <nav>
+      <a href="participant.html">Participant</a>
+      <a class="active" href="researcher.html">Dashboard</a>
+      <a href="nonprofit.html">Nonprofit</a>
+      <a href="admin.html">Admin</a>
+      <a href="terms.html#researchers">Terms</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap page">
+  <div class="page-head">
+    <h1>Plan a study</h1>
+    <span class="demo-note">Prototype · demo data only</span>
+  </div>
+  <p class="page-sub">Standard market-rate fees, split transparently — you always see where every dollar goes.</p>
+
+  <div class="grid2">
+    <div class="stack">
+      <div class="card">
+        <h2>Cost estimator</h2>
+        <p class="hint">Estimates update live. The split is the same one we publish in our open books.</p>
+
+        <label class="field"><span>Method</span>
+          <select id="method">
+            <option value="interview" selected>Interview</option>
+            <option value="usability">Usability test</option>
+            <option value="survey">Survey</option>
+            <option value="diary">Diary study</option>
+          </select>
+        </label>
+
+        <label class="field"><span>Session length: <b id="lenLbl">45 min</b></span>
+          <input type="range" id="length" min="15" max="90" step="15" value="45">
+        </label>
+
+        <label class="field"><span>Participants needed</span>
+          <input type="number" id="count" min="1" max="200" value="12">
+        </label>
+
+        <label class="field"><span>Audience</span></label>
+        <div class="radio-row" id="tier" style="margin-top:-8px; margin-bottom:14px;">
+          <label class="radio-pill"><input type="radio" name="tier" value="gen"><span>General population</span></label>
+          <label class="radio-pill"><input type="radio" name="tier" value="targeted" checked><span>Targeted</span></label>
+          <label class="radio-pill"><input type="radio" name="tier" value="hard"><span>Hard to reach</span></label>
+        </div>
+
+        <label class="field"><span>Participant incentive (we suggest a fair floor)</span>
+          <input type="number" id="incentive" min="10" step="5" value="65">
+        </label>
+      </div>
+
+      <div class="card">
+        <h2>Who you need to hear from</h2>
+        <p class="hint">Set quotas on aggregate panel data — you never browse individual profiles, and participants stay identity-masked until they accept.</p>
+        <div id="quotas"></div>
+        <button class="btn btn-ghost btn-sm" id="addQuota">+ Add a quota</button>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="card">
+        <h2>Your estimate</h2>
+        <div class="breakdown">
+          <div class="b-row"><span>Participant incentive</span><b id="bIncentive">$65</b></div>
+          <div class="b-row cause"><span>Contribution to their causes 💚</span><b id="bCause">$40</b></div>
+          <div class="b-row"><span>Recruiting &amp; operations</span><b id="bOps">$55</b></div>
+          <div class="b-total"><span>Per completed session</span><span id="bSession">$160</span></div>
+          <div class="b-row" style="margin-top:6px;"><span id="bMathLbl">12 sessions + 2 backups</span><b id="bMath">× 14</b></div>
+          <div class="b-grand"><span>Estimated total</span><span id="bTotal">$2,240</span></div>
+        </div>
+        <div class="feasibility" id="feasibility">Likely filled in 3–6 days · 1,900 panel matches</div>
+        <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-blue" id="requestStudy">Request this study</button>
+          <button class="btn btn-ghost" data-toast="Estimate saved to your workspace">Save estimate</button>
+        </div>
+        <div class="goodnote" id="estimateGood">💚 This study would send about $560 to causes your participants choose.</div>
+      </div>
+
+      <div class="card">
+        <h2>After your last study</h2>
+        <p class="hint">Every study generates an impact receipt you can share with your team.</p>
+        <div class="rows">
+          <div class="row">
+            <div><div class="main">Transit app accessibility</div><div class="meta">22 sessions · June</div></div>
+            <span class="chip green">$880 to causes</span>
+          </div>
+          <div class="row">
+            <div><div class="main">Mobile banking usability</div><div class="meta">14 sessions · May</div></div>
+            <span class="chip green">$560 to causes</span>
+          </div>
+        </div>
+        <button class="btn btn-gold btn-sm" style="margin-top:14px;" data-hearts data-toast="Impact receipt copied — go make your stakeholders smile 💛">Share impact receipt</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:20px;">
+    <h2>Your sessions</h2>
+    <p class="hint">🔒 You see a first name and the criteria they matched — nothing more. Contact, scheduling, and payment run through us.</p>
+    <div class="tabs" id="sessTabs">
+      <button class="tab active" data-target="upcoming">Upcoming (3)</button>
+      <button class="tab" data-target="past">Past (4)</button>
+    </div>
+
+    <div class="tos-section active" id="upcoming">
+      <div class="rows">
+        <div class="row">
+          <div>
+            <div class="main">Tue Jul 14 · 10:00 AM — Grocery app usability</div>
+            <div class="meta">Maya · <span class="badge">Income &lt;$50k</span> <span class="badge">Multilingual</span></div>
+          </div>
+          <div class="row-actions">
+            <button class="btn btn-blue btn-sm" data-toast="Video link copied — see you Tuesday">Join link</button>
+            <button class="btn btn-ghost btn-sm" data-toast="Reschedule request sent — we'll coordinate and confirm">Reschedule</button>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <div class="main">Tue Jul 14 · 2:30 PM — Grocery app usability</div>
+            <div class="meta">Marcus · <span class="badge">Income &lt;$50k</span> <span class="badge">Assistive tech</span></div>
+          </div>
+          <div class="row-actions">
+            <button class="btn btn-blue btn-sm" data-toast="Video link copied — see you Tuesday">Join link</button>
+            <button class="btn btn-ghost btn-sm" data-toast="Reschedule request sent — we'll coordinate and confirm">Reschedule</button>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <div class="main">Thu Jul 16 · 11:00 AM — Grocery app usability</div>
+            <div class="meta">Dot · <span class="badge">Rural</span> <span class="badge">55+</span> <span class="badge">First-time</span></div>
+          </div>
+          <div class="row-actions">
+            <button class="btn btn-blue btn-sm" data-toast="Video link copied — see you Thursday">Join link</button>
+            <button class="btn btn-ghost btn-sm" data-toast="Reschedule request sent — we'll coordinate and confirm">Reschedule</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tos-section" id="past">
+      <div class="rows">
+        <div class="row">
+          <div>
+            <div class="main">Jun 26 — Transit app accessibility</div>
+            <div class="meta">June · <span class="badge">Assistive tech</span> · recording consented</div>
+          </div>
+          <div class="row-actions">
+            <span class="chip green">Completed · paid ✓</span>
+            <button class="btn btn-ghost btn-sm" data-toast="Recording link copied — expires in 30 days">Recording</button>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <div class="main">Jun 25 — Transit app accessibility</div>
+            <div class="meta">Sam · <span class="badge">Assistive tech</span> <span class="badge">55+</span></div>
+          </div>
+          <span class="chip green">Completed · paid ✓</span>
+        </div>
+        <div class="row">
+          <div>
+            <div class="main">Jun 24 — Transit app accessibility</div>
+            <div class="meta">Ruth · <span class="badge">Rural</span> <span class="badge">Multilingual</span></div>
+          </div>
+          <span class="chip green">Completed · paid ✓</span>
+        </div>
+        <div class="row">
+          <div>
+            <div class="main">Jun 24 — Transit app accessibility</div>
+            <div class="meta">Participant no-show · backup completed Jun 26</div>
+          </div>
+          <span class="chip gold">Backfilled ✓</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const $ = (id) => document.getElementById(id);
+
+  /* ---- Panel data (demo) ---- */
+  const TIERS = {
+    gen:      { ops: 35, panel: 5200, perDay: 10, label: 'general population' },
+    targeted: { ops: 55, panel: 1900, perDay: 6,  label: 'targeted' },
+    hard:     { ops: 85, panel: 640,  perDay: 3,  label: 'hard-to-reach' }
+  };
+  const RATES = { interview: 1.45, usability: 1.35, survey: 0.7, diary: 1.8 };
+  const QUOTA_VARS = {
+    'Household income under $50k': 780,
+    'Multilingual (speaks 2+ languages)': 520,
+    'Uses a screen reader or magnifier': 140,
+    'Lives in a rural area': 310,
+    'Age 55 or older': 460,
+    'First-time research participant': 1100
+  };
+
+  let incentiveDirty = false;
+
+  const suggestIncentive = () => {
+    const len = +$('length').value;
+    const rate = RATES[$('method').value];
+    return Math.max(10, Math.round((len * rate) / 5) * 5);
+  };
+
+  const update = () => {
+    const len = +$('length').value;
+    $('lenLbl').textContent = len + ' min';
+    if (!incentiveDirty) $('incentive').value = suggestIncentive();
+
+    const n = Math.max(1, +$('count').value || 1);
+    const tier = TIERS[document.querySelector('input[name="tier"]:checked').value];
+    const incentive = Math.max(10, +$('incentive').value || 0);
+    const cause = Math.round((incentive * 0.6) / 5) * 5;
+    const session = incentive + cause + tier.ops;
+    const backups = Math.max(1, Math.ceil(n * 0.15));
+    const total = session * (n + backups);
+
+    $('bIncentive').textContent = PFG.money(incentive);
+    $('bCause').textContent = PFG.money(cause);
+    $('bOps').textContent = PFG.money(tier.ops);
+    $('bSession').textContent = PFG.money(session);
+    $('bMathLbl').textContent = n + ' sessions + ' + backups + ' backup' + (backups > 1 ? 's' : '');
+    $('bMath').textContent = '× ' + (n + backups);
+    $('bTotal').textContent = PFG.money(total);
+
+    const days = Math.max(2, Math.ceil(n / tier.perDay));
+    $('feasibility').textContent = 'Likely filled in ' + days + '–' + (days + 3) + ' days · ' +
+      tier.panel.toLocaleString('en-US') + ' panel matches (' + tier.label + ')';
+    $('estimateGood').textContent = '💚 This study would send about ' + PFG.money(cause * n) +
+      ' to causes your participants choose.';
+  };
+
+  ['method', 'length', 'count', 'incentive'].forEach(id => $(id).addEventListener('input', update));
+  $('incentive').addEventListener('input', () => { incentiveDirty = true; update(); });
+  $('method').addEventListener('change', () => { incentiveDirty = false; update(); });
+  $('length').addEventListener('change', () => { incentiveDirty = false; update(); });
+  document.querySelectorAll('input[name="tier"]').forEach(r => r.addEventListener('change', update));
+
+  /* ---- Quota grid ---- */
+  const quotas = $('quotas');
+  const addQuota = (variable, count) => {
+    const row = document.createElement('div');
+    row.className = 'quota-row';
+    const options = Object.keys(QUOTA_VARS).map(v =>
+      '<option' + (v === variable ? ' selected' : '') + '>' + v + '</option>').join('');
+    row.innerHTML =
+      '<select>' + options + '</select>' +
+      '<input type="number" min="1" value="' + (count || 4) + '" aria-label="quota count">' +
+      '<span class="avail"></span>' +
+      '<button class="rm" aria-label="Remove quota">✕</button>';
+    const refresh = () => {
+      row.querySelector('.avail').textContent = '~' +
+        QUOTA_VARS[row.querySelector('select').value].toLocaleString('en-US') + ' in panel';
+    };
+    row.querySelector('select').addEventListener('change', refresh);
+    row.querySelector('.rm').addEventListener('click', () => row.remove());
+    refresh();
+    quotas.appendChild(row);
+  };
+  addQuota('Household income under $50k', 8);
+  addQuota('Uses a screen reader or magnifier', 2);
+  $('addQuota').addEventListener('click', () => addQuota());
+
+  /* ---- Request study ---- */
+  $('requestStudy').addEventListener('click', () => {
+    PFG.hearts($('requestStudy'), 8);
+    $('requestStudy').textContent = 'Requested ✓';
+    $('requestStudy').disabled = true;
+    PFG.toast('Request sent — we’ll confirm feasibility within one business day 💚');
+  });
+
+  update();
+
+  /* Sessions tabs */
+  document.querySelectorAll('#sessTabs .tab').forEach(t => t.addEventListener('click', () => {
+    document.querySelectorAll('#sessTabs .tab').forEach(x => x.classList.toggle('active', x === t));
+    ['upcoming', 'past'].forEach(id =>
+      document.getElementById(id).classList.toggle('active', id === t.dataset.target));
+  }));
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>For participants — Participants for Good</title>
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<meta name="description" content="Get paid to shape products — and raise money for a nonprofit you love. Sign up in minutes, pick your cause, join studies that fit you.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=8">
+<script src="script.js?v=4" defer></script>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="index.html"><img class="logo-mark" src="logo.svg" alt="">Participants for Good</a>
+    <nav class="nav-links">
+      <a class="active" href="participants.html">For participants</a>
+      <a href="nonprofits.html">For nonprofits</a>
+      <a href="researchers.html">For researchers</a>
+      <a class="btn btn-primary btn-nav" href="#join">Sign up</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <div class="hero">
+    <div class="wrap">
+      <p class="eyebrow">For participants</p>
+      <h1>Get paid to shape products — and raise money for a <em>cause you love</em></h1>
+      <p class="lede">Companies need real people to test their products and share opinions. Your time is worth money — to you, and to the nonprofit you choose.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="#join">Sign up to participate</a>
+        <a class="btn btn-ghost" href="#how">How it works</a>
+      </div>
+      <p class="hero-note">Free to join. No experience needed. You're always paid for your time.</p>
+    </div>
+  </div>
+
+  <section class="alt" id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>How it works</h2>
+        <p>A few minutes to join, and every study after that does double duty.</p>
+      </div>
+      <div class="steps four">
+        <div class="step">
+          <div class="num">1</div>
+          <h3>Sign up</h3>
+          <p>Tell us a little about yourself so we can match you with studies that fit. Takes a few minutes.</p>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <h3>Pick your cause</h3>
+          <p>Choose the charity or nonprofit your participation supports — a partner organization or one you bring. Change it anytime.</p>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <h3>Join studies that fit</h3>
+          <p>Interviews, usability tests, and surveys — most take 30–60 minutes, online or near you.</p>
+        </div>
+        <div class="step">
+          <div class="num">4</div>
+          <h3>Everyone gets paid</h3>
+          <p>You're paid for every completed session, and your cause receives a contribution on top.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What studies are like</h2>
+        <p>No trick questions, no tests you can fail. Companies just want your honest experience.</p>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <h3>What you might do</h3>
+          <ul class="checks">
+            <li>Try a new app and say what's confusing</li>
+            <li>A 30-minute video call about how you shop, bank, or get around</li>
+            <li>Short surveys you can do from your phone</li>
+            <li>Occasional in-person sessions, always paid</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>What you can count on</h3>
+          <ul class="checks">
+            <li>Plain-language consent before every study</li>
+            <li>Skip any question, leave any time — still no cost to you</li>
+            <li>Your data belongs to you, never sold</li>
+            <li>We limit how often you're asked, so it never becomes a chore</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="wrap">
+      <div class="callout">
+        <div class="dot">💚</div>
+        <div>
+          <h4>Your pay is yours. The giving is extra.</h4>
+          <p>The contribution to your cause comes from the company's recruiting fee — never out of your pay. You always receive the full incentive for every session you complete.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="signup" id="join">
+    <div class="wrap">
+      <div class="signup-box">
+        <h2>Join the first participants</h2>
+        <p>Sign up for early access — we'll let you know as the first studies open up.</p>
+        <form class="signup-form" id="joinForm">
+          <input type="email" id="joinEmail" placeholder="you@example.com" aria-label="Email address" required>
+          <button class="btn" type="submit">Sign me up</button>
+        </form>
+        <p class="signup-success" id="joinSuccess">Thanks — we'll be in touch soon. 💚</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <p>© 2026 Participants for Good · Research that gives back</p>
+    <div class="foot-links">
+      <a href="mailto:hello@participantsforgood.org">hello@participantsforgood.org</a>
+      <a href="index.html#commitments">Our commitments</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('joinForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('joinEmail').value;
+    const subject = encodeURIComponent('Participants for Good — participant signup');
+    const body = encodeURIComponent('Hi — I\'d like to join as a participant.\n\nContact: ' + email);
+    window.location.href = 'mailto:hello@participantsforgood.org?subject=' + subject + '&body=' + body;
+    document.getElementById('joinForm').style.display = 'none';
+    document.getElementById('joinSuccess').style.display = 'block';
+  });
+</script>
+
+</body>
+</html>

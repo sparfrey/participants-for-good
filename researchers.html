@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>For researchers &amp; companies — Participants for Good</title>
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<meta name="description" content="Talk to real people your panels never reach. We recruit underrepresented voices through trusted charities and nonprofits — and every session funds a cause they choose.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=8">
+<script src="script.js?v=4" defer></script>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="index.html"><img class="logo-mark" src="logo.svg" alt="">Participants for Good</a>
+    <nav class="nav-links">
+      <a href="participants.html">For participants</a>
+      <a href="nonprofits.html">For nonprofits</a>
+      <a class="active" href="researchers.html">For researchers</a>
+      <a class="btn btn-primary btn-nav" href="#join">Run a study</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <div class="hero">
+    <div class="wrap">
+      <p class="eyebrow">For researchers &amp; companies</p>
+      <h1>Talk to real people your panels <em>never reach</em></h1>
+      <p class="lede">We recruit through trusted charities and community nonprofits, so underrepresented voices actually show up — low-income, rural, multilingual, disabled, first-time participants. Everyone is paid fairly, and every session sends money to a cause they care about.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="#join">Run a study</a>
+        <a class="btn btn-ghost" href="#why">Why it's different</a>
+      </div>
+      <p class="hero-note">For product teams, agencies, civic tech, and independent researchers.</p>
+    </div>
+  </div>
+
+  <section class="alt" id="why">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Why recruit here</h2>
+        <p>The motivation of the panel changes what you hear in the session.</p>
+      </div>
+      <div class="cards">
+        <div class="card">
+          <h3>Underrepresented voices, actually reached</h3>
+          <p>Recruiting through charities and community nonprofits reaches the people panels never find — the quotas that go unfilled everywhere else, and the users your product decisions keep missing.</p>
+        </div>
+        <div class="card">
+          <h3>Real people, not professional survey-takers</h3>
+          <p>People join to support a cause, not to farm incentives — so screeners aren't a sport and answers aren't rehearsed. You hear how people actually use things.</p>
+        </div>
+        <div class="card">
+          <h3>Ethics your review will like</h3>
+          <p>Plain-language consent, participation caps, fair pay guaranteed, and participant data that's never resold. Built consent-first because our mission depends on it.</p>
+        </div>
+        <div class="card">
+          <h3>Works with your stack</h3>
+          <p>Use us alongside your existing panels and platforms — bring us the segments they can't fill, or the studies where authenticity matters most.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <h2>How pricing works</h2>
+        <p>Standard market-rate recruiting fees — no premium for the good it does.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <h3>You pay a normal recruiting fee</h3>
+          <p>Priced like the agencies and platforms you already use. Budgeting stays boring.</p>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <h3>Participants are paid fairly</h3>
+          <p>Market-rate incentives for every completed session come out of the fee.</p>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <h3>Nonprofits get the rest of the story</h3>
+          <p>Each participant's chosen cause receives a contribution — and we publish annual totals, so your team can point to exactly what its research funded.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="wrap">
+      <div class="callout">
+        <div class="dot">📊</div>
+        <div>
+          <h4>Research your company can stand behind</h4>
+          <p>Every study generates an impact line you can report: sessions completed, communities reached, and dollars contributed to participant-chosen nonprofits — the same numbers we publish in our open books.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="signup" id="join">
+    <div class="wrap">
+      <div class="signup-box">
+        <h2>Run one of the first studies</h2>
+        <p>Tell us what you're trying to recruit — especially the quotas nobody else can fill — and we'll follow up.</p>
+        <form class="signup-form" id="joinForm">
+          <input type="email" id="joinEmail" placeholder="you@company.com" aria-label="Email address" required>
+          <button class="btn" type="submit">Get in touch</button>
+        </form>
+        <p class="signup-success" id="joinSuccess">Thanks — we'll reach out soon. 💚</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <p>© 2026 Participants for Good · Research that gives back</p>
+    <div class="foot-links">
+      <a href="mailto:hello@participantsforgood.org">hello@participantsforgood.org</a>
+      <a href="index.html#commitments">Our commitments</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('joinForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('joinEmail').value;
+    const subject = encodeURIComponent('Participants for Good — research partner inquiry');
+    const body = encodeURIComponent('Hi — I\'d like to run a study with Participants for Good.\n\nContact: ' + email);
+    window.location.href = 'mailto:hello@participantsforgood.org?subject=' + subject + '&body=' + body;
+    document.getElementById('joinForm').style.display = 'none';
+    document.getElementById('joinSuccess').style.display = 'block';
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Participant panel — Participants for Good</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css?v=4">
+<script src="app.js?v=2" defer></script>
+</head>
+<body>
+
+<div class="appbar">
+  <div class="wrap appbar-in">
+    <a class="logo" href="index.html"><img src="../logo.svg" alt="">Participants for Good</a>
+    <span class="portal-badge">PFG Admin</span>
+    <nav>
+      <a href="admin.html">Console</a>
+      <a class="active" href="panel.html">Panel</a>
+      <a href="terms.html">Terms</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap page">
+  <div class="page-head">
+    <h1>Participant panel</h1>
+    <span class="demo-note">Prototype · demo data only</span>
+  </div>
+  <p class="page-sub">Filter, assign to projects, and push incentives — with the fatigue cap enforced for you.</p>
+
+  <div class="stack">
+    <div class="card">
+      <h2>Intake &amp; updates</h2>
+      <p class="hint">Profiles come from the intake survey. Responses merge into existing profiles by email; new emails create profiles flagged for review.</p>
+      <div class="rows">
+        <div class="row">
+          <div>
+            <div class="main">Google Form: PFG Intake &amp; Profile Update (v2)</div>
+            <div class="meta" id="syncMeta">Connected · last synced 2 hours ago · auto-sync hourly</div>
+          </div>
+          <button class="btn btn-blue btn-sm" id="syncBtn">Sync now</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Panel <span class="chip blue" id="countChip">12 shown</span></h2>
+      <div class="filters">
+        <input type="search" id="fSearch" placeholder="Search name or email…" aria-label="Search">
+        <select id="fIncome" aria-label="Income filter">
+          <option value="">Income: any</option>
+          <option value="under50">Under $50k</option>
+          <option value="50to100">$50–100k</option>
+          <option value="over100">Over $100k</option>
+        </select>
+        <select id="fArea" aria-label="Area filter">
+          <option value="">Area: any</option>
+          <option value="rural">Rural</option>
+          <option value="suburban">Suburban</option>
+          <option value="urban">Urban</option>
+        </select>
+        <select id="fAccess" aria-label="Accessibility filter">
+          <option value="">Accessibility: any</option>
+          <option value="yes">Assistive-tech users</option>
+        </select>
+        <select id="fLang" aria-label="Language filter">
+          <option value="">Languages: any</option>
+          <option value="multi">Multilingual</option>
+        </select>
+        <label class="inline"><input type="checkbox" id="fCapacity"> Has capacity this quarter</label>
+      </div>
+
+      <div class="ptable-wrap">
+        <table class="ptable">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="checkAll" aria-label="Select all"></th>
+              <th>Person</th>
+              <th>Profile</th>
+              <th>Cause</th>
+              <th>Pace</th>
+              <th>Show rate</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+
+      <div class="bulkbar" id="bulkbar">
+        <span id="bulkCount">0 selected</span>
+        <select id="bulkProject">
+          <option value="Telehealth onboarding interviews">Telehealth onboarding interviews</option>
+          <option value="Budgeting app diary study">Budgeting app diary study</option>
+          <option value="Grocery app usability test">Grocery app usability test</option>
+        </select>
+        <button class="btn btn-blue btn-sm" id="bulkAssign">Assign to project</button>
+        <button class="btn btn-gold btn-sm" id="bulkIncentive">Push $10 thank-you</button>
+      </div>
+
+      <div class="goodnote">🛡 Anyone at their quarterly cap can't be assigned — the cap is a promise, and the tool keeps it for you.</div>
+    </div>
+  </div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const PEOPLE = [
+    { name: 'Maya Reyes', email: 'maya@…', income: 'under50', area: 'urban', access: false, langs: 2, age: 29, firstTime: false, cause: 'Riverside Youth Alliance', pace: 2, show: 100 },
+    { name: 'Dele Okafor', email: 'dele@…', income: '50to100', area: 'suburban', access: false, langs: 1, age: 41, firstTime: false, cause: 'Eastside Food Pantry', pace: 5, show: 96 },
+    { name: 'June Tran', email: 'june@…', income: 'under50', area: 'urban', access: true, langs: 2, age: 34, firstTime: false, cause: 'Open Door Crisis Line', pace: 6, show: 98 },
+    { name: 'Ruth Sandoval', email: 'ruth@…', income: 'under50', area: 'rural', access: false, langs: 2, age: 58, firstTime: false, cause: 'Green Blocks Gardens', pace: 5, show: 91 },
+    { name: 'Amos Whitehorse', email: 'amos@…', income: 'under50', area: 'rural', access: false, langs: 1, age: 47, firstTime: true, cause: 'Rural Digital Access Fund', pace: 0, show: 100 },
+    { name: 'Priya Nair', email: 'priya@…', income: 'over100', area: 'suburban', access: false, langs: 3, age: 37, firstTime: false, cause: 'Riverside Youth Alliance', pace: 1, show: 100 },
+    { name: 'Sam Beaulieu', email: 'sam@…', income: '50to100', area: 'urban', access: true, langs: 1, age: 62, firstTime: true, cause: 'Open Door Crisis Line', pace: 1, show: 100 },
+    { name: 'Gloria Mendez', email: 'gloria@…', income: 'under50', area: 'urban', access: false, langs: 2, age: 51, firstTime: true, cause: 'Eastside Food Pantry', pace: 0, show: 100 },
+    { name: 'Ken Watanabe', email: 'ken@…', income: '50to100', area: 'suburban', access: false, langs: 2, age: 44, firstTime: false, cause: 'Green Blocks Gardens', pace: 3, show: 88 },
+    { name: 'Lena Kovács', email: 'lena@…', income: 'under50', area: 'rural', access: false, langs: 2, age: 26, firstTime: true, cause: 'Prairie Health Collective', pace: 0, show: 100 },
+    { name: 'Marcus Hill', email: 'marcus@…', income: 'under50', area: 'urban', access: true, langs: 1, age: 33, firstTime: false, cause: 'Riverside Youth Alliance', pace: 4, show: 94 },
+    { name: 'Dot Fletcher', email: 'dot@…', income: '50to100', area: 'rural', access: false, langs: 1, age: 67, firstTime: true, cause: 'Rural Digital Access Fund', pace: 1, show: 100 }
+  ];
+  const NEW_FROM_FORM = [
+    { name: 'Iris Delgado', email: 'iris@…', income: 'under50', area: 'urban', access: false, langs: 2, age: 24, firstTime: true, cause: 'Eastside Food Pantry', pace: 0, show: 100, isNew: true },
+    { name: 'Walt Peters', email: 'walt@…', income: 'under50', area: 'rural', access: true, langs: 1, age: 71, firstTime: true, cause: 'Prairie Health Collective', pace: 0, show: 100, isNew: true }
+  ];
+  const CAP = 6;
+
+  const badgesFor = (p) => {
+    const b = [];
+    if (p.isNew) b.push('<span class="badge new">New from intake</span>');
+    if (p.income === 'under50') b.push('<span class="badge">Income &lt;$50k</span>');
+    if (p.area === 'rural') b.push('<span class="badge">Rural</span>');
+    if (p.access) b.push('<span class="badge">Assistive tech</span>');
+    if (p.langs > 1) b.push('<span class="badge">Multilingual</span>');
+    if (p.age >= 55) b.push('<span class="badge">55+</span>');
+    if (p.firstTime) b.push('<span class="badge">First-time</span>');
+    return b.join('');
+  };
+
+  const paceChip = (p) => {
+    if (p.pace >= CAP) return '<span class="chip coral">' + p.pace + '/' + CAP + ' resting</span>';
+    if (p.pace >= CAP - 1) return '<span class="chip gold">' + p.pace + '/' + CAP + '</span>';
+    return '<span class="chip green">' + p.pace + '/' + CAP + '</span>';
+  };
+
+  const rowsEl = document.getElementById('rows');
+  const bulkbar = document.getElementById('bulkbar');
+
+  const render = () => {
+    const q = document.getElementById('fSearch').value.toLowerCase();
+    const inc = document.getElementById('fIncome').value;
+    const area = document.getElementById('fArea').value;
+    const acc = document.getElementById('fAccess').value;
+    const lang = document.getElementById('fLang').value;
+    const cap = document.getElementById('fCapacity').checked;
+
+    const list = PEOPLE.filter(p =>
+      (!q || (p.name + p.email).toLowerCase().includes(q)) &&
+      (!inc || p.income === inc) &&
+      (!area || p.area === area) &&
+      (!acc || p.access) &&
+      (!lang || p.langs > 1) &&
+      (!cap || p.pace < CAP)
+    );
+
+    document.getElementById('countChip').textContent = list.length + ' shown';
+    rowsEl.innerHTML = list.map((p, i) => {
+      const atCap = p.pace >= CAP;
+      return '<tr data-name="' + p.name + '">' +
+        '<td><input type="checkbox" class="rowcheck" aria-label="Select ' + p.name + '"></td>' +
+        '<td><div class="p-name">' + p.name + '</div><div class="p-email">' + p.email + '</div></td>' +
+        '<td><div class="badges">' + badgesFor(p) + '</div></td>' +
+        '<td style="white-space:nowrap;">' + p.cause + '</td>' +
+        '<td>' + paceChip(p) + '</td>' +
+        '<td>' + p.show + '%</td>' +
+        '<td><div class="row-actions">' +
+          '<button class="btn btn-blue btn-sm js-assign"' + (atCap ? ' disabled title="At quarterly cap"' : '') + '>Assign</button>' +
+          '<button class="btn btn-gold btn-sm js-incentive">$</button>' +
+        '</div></td></tr>';
+    }).join('');
+    wireRows(list);
+    updateBulk();
+  };
+
+  const selectedNames = () => [...rowsEl.querySelectorAll('.rowcheck:checked')].map(c => c.closest('tr').dataset.name);
+
+  const updateBulk = () => {
+    const n = selectedNames().length;
+    document.getElementById('bulkCount').textContent = n + ' selected';
+    bulkbar.classList.toggle('show', n > 0);
+  };
+
+  const person = (name) => PEOPLE.find(p => p.name === name);
+
+  const wireRows = (list) => {
+    rowsEl.querySelectorAll('.rowcheck').forEach(c => c.addEventListener('change', updateBulk));
+    rowsEl.querySelectorAll('.js-assign').forEach(btn => btn.addEventListener('click', () => {
+      const name = btn.closest('tr').dataset.name;
+      const project = document.getElementById('bulkProject').value;
+      person(name).pace++;
+      PFG.hearts(btn, 5);
+      PFG.toast(name.split(' ')[0] + ' invited to “' + project + '” 💌');
+      render();
+    }));
+    rowsEl.querySelectorAll('.js-incentive').forEach(btn => btn.addEventListener('click', () => {
+      const name = btn.closest('tr').dataset.name;
+      PFG.hearts(btn, 5);
+      PFG.toast('$10 thank-you on its way to ' + name.split(' ')[0] + ' 💛');
+    }));
+  };
+
+  document.getElementById('checkAll').addEventListener('change', (e) => {
+    rowsEl.querySelectorAll('.rowcheck').forEach(c => { c.checked = e.target.checked; });
+    updateBulk();
+  });
+
+  document.getElementById('bulkAssign').addEventListener('click', (e) => {
+    const names = selectedNames();
+    const project = document.getElementById('bulkProject').value;
+    const eligible = names.filter(n => person(n).pace < CAP);
+    const blocked = names.length - eligible.length;
+    eligible.forEach(n => person(n).pace++);
+    PFG.hearts(e.target, 7);
+    PFG.toast(eligible.length + ' invited to “' + project + '”' + (blocked ? ' · ' + blocked + ' protected by the cap 🛡' : ' 💌'));
+    render();
+  });
+
+  document.getElementById('bulkIncentive').addEventListener('click', (e) => {
+    const n = selectedNames().length;
+    PFG.hearts(e.target, 7);
+    PFG.toast('$10 thank-you sent to ' + n + ' ' + (n === 1 ? 'person' : 'people') + ' 💛');
+  });
+
+  document.getElementById('syncBtn').addEventListener('click', (e) => {
+    if (NEW_FROM_FORM.length) {
+      PEOPLE.unshift(...NEW_FROM_FORM.splice(0, NEW_FROM_FORM.length));
+      document.getElementById('syncMeta').textContent = 'Connected · synced just now · 2 new profiles, 3 updated';
+      PFG.hearts(e.target, 6);
+      PFG.toast('Synced from Google Forms — 2 new profiles, 3 updated ✓');
+    } else {
+      document.getElementById('syncMeta').textContent = 'Connected · synced just now · everything up to date';
+      PFG.toast('Everything up to date ✓');
+    }
+    render();
+  });
+
+  ['fSearch', 'fIncome', 'fArea', 'fAccess', 'fLang', 'fCapacity'].forEach(id =>
+    document.getElementById(id).addEventListener('input', render));
+
+  render();
+});
+</script>
+
+</body>
+</html>

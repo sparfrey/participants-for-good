@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Participant — Participants for Good</title>
+<link rel="icon" type="image/svg+xml" href="../logo.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css?v=4">
+<script src="app.js?v=2" defer></script>
+</head>
+<body>
+
+<div class="appbar">
+  <div class="wrap appbar-in">
+    <a class="logo" href="index.html"><img src="../logo.svg" alt="">Participants for Good</a>
+    <span class="portal-badge">Participant</span>
+    <nav>
+      <a class="active" href="participant.html">Dashboard</a>
+      <a href="researcher.html">Researcher</a>
+      <a href="nonprofit.html">Nonprofit</a>
+      <a href="admin.html">Admin</a>
+      <a href="terms.html#participants">Terms</a>
+    </nav>
+  </div>
+</div>
+
+<main class="wrap page">
+  <div class="page-head">
+    <h1>Hi Maya 👋</h1>
+    <span class="demo-note">Prototype · demo data only</span>
+  </div>
+  <p class="page-sub">Every session you complete pays you — and sends money to your cause.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="num green">$195</div><div class="lbl">You've earned</div></div>
+    <div class="stat"><div class="num gold">$120</div><div class="lbl">Sent to your cause</div></div>
+    <div class="stat"><div class="num">3</div><div class="lbl">Sessions completed</div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="stack">
+      <div class="card">
+        <h2>Open invites</h2>
+        <p class="hint">Studies you match. Joining is always optional — and always paid.</p>
+        <div class="rows" id="invites">
+          <div class="row">
+            <div>
+              <div class="main">Grocery app usability test</div>
+              <div class="meta">45 min video call · $70 to you · $42 to your cause</div>
+            </div>
+            <button class="btn btn-blue btn-sm js-accept">Accept invite</button>
+          </div>
+          <div class="row">
+            <div>
+              <div class="main">How you get around your city</div>
+              <div class="meta">30 min interview · $50 to you · $30 to your cause</div>
+            </div>
+            <button class="btn btn-blue btn-sm js-accept">Accept invite</button>
+          </div>
+        </div>
+        <div class="goodnote">💚 Even screener answers help shape better research.</div>
+      </div>
+
+      <div class="card">
+        <h2>Earnings</h2>
+        <p class="hint">Paid instantly when a session is approved. No minimums, ever.</p>
+        <div class="rows">
+          <div class="row">
+            <div><div class="main">Transit app accessibility</div><div class="meta">June 24 · paid to debit card</div></div>
+            <span class="amt">$65</span>
+          </div>
+          <div class="row">
+            <div><div class="main">Benefits portal navigation</div><div class="meta">June 10 · paid to debit card</div></div>
+            <span class="amt">$65</span>
+          </div>
+          <div class="row">
+            <div><div class="main">Mobile banking usability</div><div class="meta">May 28 · gift card</div></div>
+            <span class="amt">$65</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <div class="card">
+        <h2>Your cause</h2>
+        <p class="hint">Every session sends a contribution here — from the company's fee, never from your pay.</p>
+        <label class="field"><span>Supporting</span>
+          <select id="causeSelect">
+            <option selected>Riverside Youth Alliance</option>
+            <option>Eastside Food Pantry</option>
+            <option>Open Door Crisis Line</option>
+            <option>Green Blocks Community Gardens</option>
+            <option>Suggest a nonprofit…</option>
+          </select>
+        </label>
+        <div class="meter"><i style="width: 80%"></i></div>
+        <div class="meter-lbl"><span>$120 raised by you</span><span>$150 milestone</span></div>
+        <div class="goodnote" id="causeNote">🌱 One more session and you'll have funded a full week of after-school programming.</div>
+      </div>
+
+      <div class="card">
+        <h2>Your pace</h2>
+        <p class="hint">We cap how often anyone is asked, so this never becomes a chore.</p>
+        <div class="meter"><i class="blue" style="width: 33%"></i></div>
+        <div class="meter-lbl"><span>2 of 6 studies this quarter</span><span>resets Oct 1</span></div>
+      </div>
+
+      <div class="card">
+        <h2>Invite a friend</h2>
+        <p class="hint">Real research needs real variety — people you know count.</p>
+        <button class="btn btn-gold btn-sm" data-hearts data-toast="Invite link copied — thanks for spreading the good 💛">Copy your invite link</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  /* Accepting an invite: hearts + the row flips to scheduled. */
+  document.querySelectorAll('.js-accept').forEach(btn => {
+    btn.addEventListener('click', () => {
+      PFG.hearts(btn, 7);
+      const row = btn.closest('.row');
+      const chip = document.createElement('span');
+      chip.className = 'chip green';
+      chip.textContent = 'Scheduled ✓';
+      btn.replaceWith(chip);
+      const meta = row.querySelector('.meta');
+      PFG.toast('You’re in! We’ll email times to pick from — your cause thanks you 💚');
+    });
+  });
+
+  /* Changing cause: a warm confirmation. */
+  const cause = document.getElementById('causeSelect');
+  cause.addEventListener('change', () => {
+    PFG.hearts(cause, 6);
+    if (cause.value === 'Suggest a nonprofit…') {
+      PFG.toast('Love it — tell us who, and we’ll reach out to them 💌');
+    } else {
+      PFG.toast('Done — your sessions now support ' + cause.value + ' 💚');
+    }
+  });
+});
+</script>
+
+</body>
+</html>
