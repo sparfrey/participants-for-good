@@ -404,7 +404,13 @@ footer { background: var(--gold); padding: 36px 0; }
 .foot p { font-size: 0.85rem; color: #5C420F; }
 .foot a { color: #5C420F; text-decoration: none; font-size: 0.85rem; font-weight: 600; }
 .foot a:hover { color: var(--ink); }
-.foot-links { display: flex; gap: 20px; }
+.foot-links { display: flex; gap: 20px; align-items: center; }
+/* TEMP demo-only entry to the platform prototype — remove before public launch */
+.foot-preview {
+  background: rgba(255, 255, 255, 0.8); color: var(--gold-deep) !important;
+  padding: 6px 14px; border-radius: 999px; font-weight: 700;
+}
+.foot-preview:hover { background: #fff; color: var(--ink) !important; }
 
 /* ---------- Scroll reveal ---------- */
 .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.6s ease, transform 0.6s ease; }
