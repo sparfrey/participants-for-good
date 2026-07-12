@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nonprofit — Participants for Good</title>
+<title>Nonprofit · Participants for Good</title>
 <link rel="icon" type="image/svg+xml" href="../logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,7 +32,7 @@
     <h1>Riverside Youth Alliance</h1>
     <span class="demo-note">Prototype · demo data only</span>
   </div>
-  <p class="page-sub">Your supporters' voices, funding your mission — nothing for you to run.</p>
+  <p class="page-sub">Your supporters' voices, funding your mission, with nothing for you to run.</p>
 
   <div class="stats">
     <div class="stat"><div class="num">128</div><div class="lbl">Supporters joined</div></div>
@@ -59,7 +59,7 @@
             <span class="amt">+$900</span>
           </div>
         </div>
-        <div class="goodnote">💚 That's 57 supporters who got paid for their time — and chose you.</div>
+        <div class="goodnote">💚 That's 57 supporters who got paid for their time and chose you.</div>
       </div>
 
       <div class="card">
@@ -91,7 +91,7 @@
     <div class="stack">
       <div class="card">
         <h2>Grow your supporters</h2>
-        <p class="hint">Share your link — supporters sign themselves up and pick you as their cause. That's the whole job.</p>
+        <p class="hint">Share your link. Supporters sign themselves up and pick you as their cause. That's the whole job.</p>
         <label class="field"><span>Your invite link</span>
           <input type="text" readonly value="participantsforgood.org/j/riverside-youth" id="inviteLink">
         </label>
@@ -114,7 +114,7 @@
       <div class="card">
         <h2>Board summary</h2>
         <p class="hint">Everything above, formatted for your next board meeting.</p>
-        <button class="btn btn-gold btn-sm" data-hearts data-toast="Annual summary downloaded — go show it off 💛">Download annual summary</button>
+        <button class="btn btn-gold btn-sm" data-hearts data-toast="Annual summary downloaded. Go show it off 💛">Download annual summary</button>
       </div>
     </div>
   </div>
@@ -127,10 +127,10 @@ document.addEventListener('DOMContentLoaded', () => {
     link.select();
     try { navigator.clipboard.writeText(link.value); } catch (err) { document.execCommand('copy'); }
     PFG.hearts(e.target, 7);
-    PFG.toast('Link copied — thank you for sharing 💚');
+    PFG.toast('Link copied. Thank you for sharing 💚');
   });
   document.querySelectorAll('.js-pref').forEach(cb => {
-    cb.addEventListener('change', () => PFG.toast('Preference saved — we’ll respect it ✓'));
+    cb.addEventListener('change', () => PFG.toast('Preference saved. We’ll respect it ✓'));
   });
 });
 </script>

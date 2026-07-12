@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Participant panel — Participants for Good</title>
+<title>Participant panel · Participants for Good</title>
 <link rel="icon" type="image/svg+xml" href="../logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,7 +30,7 @@
     <h1>Participant panel</h1>
     <span class="demo-note">Prototype · demo data only</span>
   </div>
-  <p class="page-sub">Filter, assign to projects, and push incentives — with the fatigue cap enforced for you.</p>
+  <p class="page-sub">Filter, assign to projects, and push incentives, with the fatigue cap enforced for you.</p>
 
   <div class="stack">
     <div class="card">
@@ -102,7 +102,7 @@
         <button class="btn btn-gold btn-sm" id="bulkIncentive">Push $10 thank-you</button>
       </div>
 
-      <div class="goodnote">🛡 Anyone at their quarterly cap can't be assigned — the cap is a promise, and the tool keeps it for you.</div>
+      <div class="goodnote">🛡 Anyone at their quarterly cap can't be assigned. The cap is a promise, and the tool keeps it for you.</div>
     </div>
   </div>
 </main>
@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
       PEOPLE.unshift(...NEW_FROM_FORM.splice(0, NEW_FROM_FORM.length));
       document.getElementById('syncMeta').textContent = 'Connected · synced just now · 2 new profiles, 3 updated';
       PFG.hearts(e.target, 6);
-      PFG.toast('Synced from Google Forms — 2 new profiles, 3 updated ✓');
+      PFG.toast('Synced from Google Forms: 2 new profiles, 3 updated ✓');
     } else {
       document.getElementById('syncMeta').textContent = 'Connected · synced just now · everything up to date';
       PFG.toast('Everything up to date ✓');

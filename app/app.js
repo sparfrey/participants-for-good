@@ -4,7 +4,7 @@ const PFG = (() => {
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const HEARTS = ['💚', '💛', '💙', '🧡'];
 
-  /* Little hearts pop up from an element — used on actions that do good. */
+  /* Little hearts pop up from an element, used on actions that do good. */
   const hearts = (el, count) => {
     if (reduced || !el) return;
     const r = el.getBoundingClientRect();

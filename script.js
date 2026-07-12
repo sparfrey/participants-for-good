@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(loop, 2800);
   }
 
-  /* Hero parallax — the collage and the little shapes drift with the cursor */
+  /* Hero parallax: the collage and the little shapes drift with the cursor */
   const hero = document.querySelector('.hero-split');
   const visual = document.querySelector('.hero-visual');
   if (hero && visual) {

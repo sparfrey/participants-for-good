@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — Participants for Good</title>
+<title>Admin · Participants for Good</title>
 <link rel="icon" type="image/svg+xml" href="../logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -66,7 +66,7 @@
 
       <div class="card">
         <h2>Panel health</h2>
-        <p class="hint">Composition vs. mission targets — are we reaching who panels miss?</p>
+        <p class="hint">Composition vs. mission targets: are we reaching who panels miss?</p>
         <div class="comp">
           <div class="comp-lbl"><span>Household income under $50k</span><b>34% / 40% target</b></div>
           <div class="meter"><i style="width:85%"></i></div>
@@ -83,7 +83,7 @@
           <div class="comp-lbl"><span>First-time participants</span><b>57% / 50% target</b></div>
           <div class="meter"><i style="width:100%"></i></div>
         </div>
-        <div class="goodnote">🌾 Rural is under target — 3 rural-focused partner prospects in the pipeline.</div>
+        <div class="goodnote">🌾 Rural is under target, with 3 rural-focused partner prospects in the pipeline.</div>
       </div>
 
       <div class="card">
@@ -98,7 +98,7 @@
         <div class="rows">
           <div class="row"><div class="main">D. Okafor</div><span class="chip gold">5 of 6</span></div>
           <div class="row"><div class="main">R. Sandoval</div><span class="chip gold">5 of 6</span></div>
-          <div class="row"><div class="main">J. Tran</div><span class="chip coral">6 of 6 — resting</span></div>
+          <div class="row"><div class="main">J. Tran</div><span class="chip coral">6 of 6 · resting</span></div>
         </div>
       </div>
     </div>
@@ -137,15 +137,15 @@
 
       <div class="card">
         <h2>Engagement</h2>
-        <p class="hint">Every message counts against a frequency cap — annoyance is a budget too.</p>
+        <p class="hint">Every message counts against a frequency cap. Annoyance is a budget too.</p>
         <div class="rows">
           <div class="row">
             <div><div class="main">Quarterly impact digest</div><div class="meta">All audiences · from live ledger data</div></div>
-            <button class="btn btn-gold btn-sm" data-hearts data-toast="Digest queued — 2,093 people are about to feel good 💛">Send</button>
+            <button class="btn btn-gold btn-sm" data-hearts data-toast="Digest queued. 2,093 people are about to feel good 💛">Send</button>
           </div>
           <div class="row">
             <div><div class="main">Re-engage dormant participants</div><div class="meta">214 people · 90+ days quiet</div></div>
-            <button class="btn btn-ghost btn-sm" data-toast="Campaign drafted — review before sending">Draft</button>
+            <button class="btn btn-ghost btn-sm" data-toast="Campaign drafted. Review before sending">Draft</button>
           </div>
           <div class="row">
             <div><div class="main">Milestone notes</div><div class="meta">6 participants crossed $100 to their cause</div></div>
@@ -166,16 +166,16 @@ document.addEventListener('DOMContentLoaded', () => {
       chip.className = 'chip green';
       chip.textContent = 'Approved ✓';
       btn.replaceWith(chip);
-      PFG.toast('Study approved — participants get paid fairly, causes get funded ✓');
+      PFG.toast('Study approved. Participants get paid fairly, causes get funded ✓');
     });
   });
 
   const batch = document.getElementById('runBatch');
   batch.addEventListener('click', () => {
     PFG.hearts(batch, 10);
-    batch.textContent = 'Sent — $4,120 to 12 nonprofits ✓';
+    batch.textContent = 'Sent: $4,120 to 12 nonprofits ✓';
     batch.disabled = true;
-    PFG.toast('Payouts on their way — this is the whole point 💚');
+    PFG.toast('Payouts on their way. This is the whole point 💚');
   });
 });
 </script>
