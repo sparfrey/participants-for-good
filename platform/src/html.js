@@ -47,7 +47,7 @@ ${body}
   <div class="wrap foot">
     <p>© 2026 Participants for Good · Research that gives back</p>
     <div class="foot-links">
-      <a href="mailto:hello@participantsforgood.org">hello@participantsforgood.org</a>
+      <a href="mailto:twiglabinfo@gmail.com">twiglabinfo@gmail.com</a>
       <a href="https://participantsforgood.org">About</a>
     </div>
   </div>

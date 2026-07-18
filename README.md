@@ -24,4 +24,4 @@ Static site, no build step — edit and push, GitHub Pages redeploys in about a 
   signups open.
 - The prototype's demo data (Maya, Riverside Youth Alliance, all dollar figures) is
   illustrative and labeled as such in the UI.
-- Signup forms are mailto placeholders to hello@participantsforgood.org.
+- Signup forms are mailto placeholders to twiglabinfo@gmail.com.
