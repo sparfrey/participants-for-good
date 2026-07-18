@@ -257,7 +257,49 @@ export const q = {
     FROM ledger JOIN invites ON invites.id = ledger.invite_id
     JOIN causes ON causes.id = ledger.cause_id
     WHERE invites.study_id = ? AND ledger.entry_type = 'contribution'
-    GROUP BY causes.id ORDER BY cents DESC`)
+    GROUP BY causes.id ORDER BY cents DESC`),
+
+  /* ---- Admin (trusted: may see emails and full profiles) ---- */
+  studiesByStatus: db.prepare(`
+    SELECT studies.*, orgs.name AS org_name,
+      (SELECT COUNT(*) FROM invites WHERE study_id = studies.id AND status IN ('accepted','completed')) AS filled,
+      (SELECT COUNT(*) FROM invites WHERE study_id = studies.id AND status = 'completed') AS done
+    FROM studies LEFT JOIN orgs ON orgs.id = studies.org_id
+    WHERE studies.status = ? ORDER BY studies.id DESC`),
+  declineStudy: db.prepare(`UPDATE studies SET status = 'declined' WHERE id = ? AND status = 'submitted'`),
+  closeStudy: db.prepare(`UPDATE studies SET status = 'closed' WHERE id = ? AND status = 'open'`),
+
+  adminStudySessions: db.prepare(`
+    SELECT invites.id, invites.status, invites.created_at, users.email,
+           profiles.name, profiles.income_band, profiles.area, profiles.languages,
+           profiles.assistive, profiles.age_band, causes.name AS cause_name
+    FROM invites
+    JOIN users ON users.id = invites.user_id
+    JOIN profiles ON profiles.user_id = invites.user_id
+    LEFT JOIN causes ON causes.id = profiles.cause_id
+    WHERE invites.study_id = ? ORDER BY
+      CASE invites.status WHEN 'accepted' THEN 0 WHEN 'completed' THEN 1 ELSE 2 END, invites.created_at`),
+  inviteWithStudy: db.prepare(`
+    SELECT invites.*, studies.incentive_cents, studies.contribution_cents, studies.status AS study_status
+    FROM invites JOIN studies ON studies.id = invites.study_id WHERE invites.id = ?`),
+  setNoShow: db.prepare(`UPDATE invites SET status = 'no_show' WHERE id = ? AND status = 'accepted'`),
+
+  adminPanel: db.prepare(`
+    SELECT users.id AS user_id, users.email, profiles.*, causes.name AS cause_name,
+      (SELECT COUNT(*) FROM invites WHERE user_id = users.id AND status IN ('accepted','completed')
+        AND created_at >= datetime('now', 'start of year', '+' || (((CAST(strftime('%m','now') AS INTEGER) - 1) / 3) * 3) || ' months')) AS pace,
+      (SELECT COUNT(*) FROM invites WHERE user_id = users.id AND status = 'completed') AS lifetime_done
+    FROM profiles
+    JOIN users ON users.id = profiles.user_id
+    LEFT JOIN causes ON causes.id = profiles.cause_id
+    WHERE profiles.onboarded = 1 ORDER BY users.id`),
+  inviteOne: db.prepare('INSERT OR IGNORE INTO invites (user_id, study_id) VALUES (?, ?)'),
+
+  platformTotals: db.prepare(`
+    SELECT
+      COALESCE(SUM(CASE WHEN entry_type = 'incentive' THEN amount_cents END), 0) AS incentives_cents,
+      COALESCE(SUM(CASE WHEN entry_type = 'contribution' THEN amount_cents END), 0) AS causes_cents
+    FROM ledger`)
 };
 
 export const QUARTER_CAP = 6;

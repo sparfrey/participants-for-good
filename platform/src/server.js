@@ -8,6 +8,7 @@ import {
 } from './auth.js';
 import { layout, esc, money } from './html.js';
 import { researcher } from './researcher.js';
+import { admin } from './admin.js';
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const app = express();
@@ -297,30 +298,7 @@ app.post('/invites/:id/accept', requireUser, (req, res) => {
 });
 
 app.use('/researcher', researcher);
-
-/* Dev-only: complete a session and write the ledger split, until the admin
-   console exists. Lets the money flow be exercised end to end. */
-if (DEV) {
-  app.post('/dev/approve-study/:id', requireUser, (req, res) => {
-    const id = Number(req.params.id);
-    const changed = q.approveStudy.run(id).changes;
-    if (changed) q.inviteAllToStudy.run(id);
-    res.redirect('/researcher/studies/' + id + '?m=' +
-      encodeURIComponent(changed ? 'Approved (dev). Invites are out to matching participants. 💌' : 'Study was not awaiting review.'));
-  });
-
-  app.post('/dev/complete/:id', requireUser, (req, res) => {
-    const invite = q.invite.get(Number(req.params.id), req.user.id);
-    if (invite && invite.status === 'accepted') {
-      const study = db.prepare('SELECT * FROM studies WHERE id = ?').get(invite.study_id);
-      const profile = q.profile.get(req.user.id);
-      q.setInviteStatus.run('completed', invite.id);
-      q.addLedger.run({ user_id: req.user.id, invite_id: invite.id, entry_type: 'incentive', amount_cents: study.incentive_cents, cause_id: null });
-      q.addLedger.run({ user_id: req.user.id, invite_id: invite.id, entry_type: 'contribution', amount_cents: study.contribution_cents, cause_id: profile.cause_id });
-    }
-    res.redirect('/dashboard?m=' + encodeURIComponent('Session completed (dev). You got paid and your cause got funded. 💚'));
-  });
-}
+app.use('/admin', admin);
 
 const port = process.env.PORT || 4519;
 app.listen(port, () => console.log('Participants for Good platform on http://localhost:' + port + (DEV ? ' (dev mode)' : '')));

@@ -13,9 +13,9 @@ npm run dev        # http://localhost:4519
 ```
 
 With no `.env`, the app runs in **dev mode**: magic links appear on-screen instead of
-being emailed, and a dev-only "complete session" route exists so the ledger flow can be
-exercised before the admin console is built. Copy `.env.example` to `.env` for
-production settings.
+being emailed, and every signed-in user is treated as an admin so the console can be
+exercised locally. In production, set `ADMIN_EMAILS`; only those accounts ever get the
+admin role. Copy `.env.example` to `.env` for production settings.
 
 ## Architecture
 
@@ -46,7 +46,11 @@ quarter and enforced server-side on accept.
 - `GET|POST /welcome` onboarding wizard (name required, demographics optional, cause pick)
 - `GET /dashboard` invites, earnings, cause, pace meter, all from the DB
 - `POST /cause`, `POST /invites/:id/accept`, `POST /signout`
-- `POST /dev/complete/:id` dev-mode only: mark a session complete + write ledger split
+- `/researcher/*` workspace creation, study builder with quota targets, study detail
+  with masked sessions + ledger-backed impact receipt
+- `/admin/*` (admin role): review queue (approve fields + invites / decline), study ops
+  (complete-and-pay writes both ledger rows, no-show), close study, and the participant
+  panel with filters and cap-enforced invites
 
 ## Deploying (Railway, same pattern as personabud.com)
 
@@ -57,6 +61,7 @@ quarter and enforced server-side on accept.
 
 ## Not yet built (see docs/PLATFORM-PLAN.md)
 
-Real study matching (today every open study invites everyone), scheduling, payouts
-(Stripe/Tremendous), researcher + nonprofit + admin portals, screeners, and email
-notifications beyond sign-in.
+Quota-aware matching (approval invites all onboarded participants; quotas are tracked
+targets), scheduling, real payout rails (Stripe/Tremendous; "complete & pay" writes the
+ledger but moves no money yet), researcher payment collection, the nonprofit portal,
+screeners, and email notifications beyond sign-in.

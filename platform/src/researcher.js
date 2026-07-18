@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { q } from './db.js';
-import { DEV, requireUser } from './auth.js';
+import { requireUser } from './auth.js';
 import { layout, esc, money } from './html.js';
 import { TIERS, METHODS, estimate, suggestedIncentiveCents, QUOTA_VARIABLES } from './pricing.js';
 
@@ -19,7 +19,8 @@ function requireResearcher(req, res, next) {
 const statusChip = (s) => ({
   submitted: '<span class="chip gold">In review</span>',
   open: '<span class="chip blue">Fielding</span>',
-  closed: '<span class="chip green">Complete</span>'
+  closed: '<span class="chip green">Complete</span>',
+  declined: '<span class="chip coral">Declined · revise and resubmit</span>'
 }[s] || `<span class="chip">${esc(s)}</span>`);
 
 const traitBadges = (p) => {
@@ -213,10 +214,7 @@ researcher.get('/studies/:id', requireResearcher, (req, res) => {
     body: `
       <div class="page-head"><h1>${esc(study.title)}</h1>${statusChip(study.status)}</div>
       <p class="page-sub">${study.length_min} min ${esc(METHODS[study.method]?.label || study.method)} ·
-        ${esc(TIERS[study.tier]?.label || study.tier)} · ${study.needed} participants
-        ${study.status === 'submitted' && DEV ? `
-          <form method="post" action="/dev/approve-study/${study.id}" class="inlineform">
-            <button class="btn btn-gold btn-sm">Approve &amp; field (dev)</button></form>` : ''}</p>
+        ${esc(TIERS[study.tier]?.label || study.tier)} · ${study.needed} participants</p>
 
       <div class="grid2">
         <div class="stack">

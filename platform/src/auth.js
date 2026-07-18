@@ -45,6 +45,9 @@ export async function deliverMagicLink(email, linkToken) {
 
 /* Verifies a magic link and returns a signed-in user, creating the account
    (with profile row + invites to open studies) on first sign-in. */
+const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || '')
+  .split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+
 export function consumeMagicLink(linkToken) {
   const link = q.magicLink.get(linkToken);
   if (!link) return null;
@@ -57,9 +60,17 @@ export function consumeMagicLink(linkToken) {
     q.createProfile.run(id);
     q.inviteToOpenStudies.run(id);
   }
+  if (ADMIN_EMAILS.includes(link.email)) q.addRole.run(user.id, 'admin');
   const t = token();
   q.createSession.run(t, user.id, inDays(SESSION_DAYS));
   return { user, sessionToken: t };
+}
+
+/* In dev with no ADMIN_EMAILS configured, every signed-in user is an admin so the
+   console can be exercised locally. In production, only listed emails ever are. */
+function isAdmin(userId) {
+  if (q.rolesFor.all(userId).some(r => r.role === 'admin')) return true;
+  return DEV && ADMIN_EMAILS.length === 0;
 }
 
 export function sessionCookie(res, value) {
@@ -80,9 +91,16 @@ export function attachUser(req, _res, next) {
     const sess = q.session.get(match.slice('pfg_session='.length));
     if (sess) {
       req.user = db.prepare('SELECT * FROM users WHERE id = ?').get(sess.user_id);
+      req.user.admin = isAdmin(req.user.id);
       req.sessionToken = sess.token;
     }
   }
+  next();
+}
+
+export function requireAdmin(req, res, next) {
+  if (!req.user) return res.redirect('/signin');
+  if (!req.user.admin) return res.status(403).send('Not authorized');
   next();
 }
 
