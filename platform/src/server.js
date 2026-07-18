@@ -7,6 +7,7 @@ import {
   sessionCookie, attachUser, requireUser
 } from './auth.js';
 import { layout, esc, money } from './html.js';
+import { researcher } from './researcher.js';
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const app = express();
@@ -295,9 +296,19 @@ app.post('/invites/:id/accept', requireUser, (req, res) => {
   res.redirect('/dashboard?m=' + encodeURIComponent('You’re in! We’ll email times to pick from. Your cause thanks you 💚'));
 });
 
+app.use('/researcher', researcher);
+
 /* Dev-only: complete a session and write the ledger split, until the admin
    console exists. Lets the money flow be exercised end to end. */
 if (DEV) {
+  app.post('/dev/approve-study/:id', requireUser, (req, res) => {
+    const id = Number(req.params.id);
+    const changed = q.approveStudy.run(id).changes;
+    if (changed) q.inviteAllToStudy.run(id);
+    res.redirect('/researcher/studies/' + id + '?m=' +
+      encodeURIComponent(changed ? 'Approved (dev). Invites are out to matching participants. 💌' : 'Study was not awaiting review.'));
+  });
+
   app.post('/dev/complete/:id', requireUser, (req, res) => {
     const invite = q.invite.get(Number(req.params.id), req.user.id);
     if (invite && invite.status === 'accepted') {

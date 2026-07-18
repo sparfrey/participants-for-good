@@ -78,7 +78,42 @@ db.exec(`
     cause_id INTEGER REFERENCES causes(id),
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
   );
+
+  CREATE TABLE IF NOT EXISTS user_roles (
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    role TEXT NOT NULL,            -- researcher | admin
+    UNIQUE(user_id, role)
+  );
+
+  CREATE TABLE IF NOT EXISTS orgs (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+
+  CREATE TABLE IF NOT EXISTS org_members (
+    org_id INTEGER NOT NULL REFERENCES orgs(id),
+    user_id INTEGER NOT NULL REFERENCES users(id),
+    UNIQUE(user_id)                -- v0: one org per user
+  );
+
+  -- Audience targets a researcher sets on a study. Tracked against fills;
+  -- matching enforcement comes with the admin console.
+  CREATE TABLE IF NOT EXISTS quota_lines (
+    id INTEGER PRIMARY KEY,
+    study_id INTEGER NOT NULL REFERENCES studies(id),
+    variable TEXT NOT NULL,        -- income_under50 | rural | multilingual | assistive | age55 | first_time
+    target_count INTEGER NOT NULL
+  );
 `);
+
+/* Column migrations for tables that predate the researcher build. */
+const studyCols = db.prepare('PRAGMA table_info(studies)').all().map(c => c.name);
+if (!studyCols.includes('org_id')) db.exec('ALTER TABLE studies ADD COLUMN org_id INTEGER REFERENCES orgs(id)');
+if (!studyCols.includes('tier')) db.exec("ALTER TABLE studies ADD COLUMN tier TEXT DEFAULT 'targeted'");
+if (!studyCols.includes('ops_cents')) db.exec('ALTER TABLE studies ADD COLUMN ops_cents INTEGER DEFAULT 0');
+if (!studyCols.includes('needed')) db.exec('ALTER TABLE studies ADD COLUMN needed INTEGER DEFAULT 8');
+if (!studyCols.includes('created_at')) db.exec('ALTER TABLE studies ADD COLUMN created_at TEXT');
 
 /* ---------- Seeds (idempotent) ---------- */
 
@@ -162,7 +197,67 @@ export const q = {
       COALESCE(SUM(CASE WHEN entry_type = 'contribution' THEN amount_cents END), 0) AS cause_cents
     FROM ledger WHERE user_id = ?`),
   completedCount: db.prepare(`
-    SELECT COUNT(*) AS n FROM invites WHERE user_id = ? AND status = 'completed'`)
+    SELECT COUNT(*) AS n FROM invites WHERE user_id = ? AND status = 'completed'`),
+
+  /* ---- Researcher ---- */
+  rolesFor: db.prepare('SELECT role FROM user_roles WHERE user_id = ?'),
+  addRole: db.prepare('INSERT OR IGNORE INTO user_roles (user_id, role) VALUES (?, ?)'),
+  createOrg: db.prepare('INSERT INTO orgs (name) VALUES (?)'),
+  addOrgMember: db.prepare('INSERT OR IGNORE INTO org_members (org_id, user_id) VALUES (?, ?)'),
+  orgFor: db.prepare(`
+    SELECT orgs.* FROM orgs JOIN org_members ON org_members.org_id = orgs.id
+    WHERE org_members.user_id = ?`),
+
+  createStudy: db.prepare(`
+    INSERT INTO studies (title, method, length_min, incentive_cents, contribution_cents,
+                         ops_cents, needed, tier, status, org_id, created_at)
+    VALUES (@title, @method, @length_min, @incentive_cents, @contribution_cents,
+            @ops_cents, @needed, @tier, 'submitted', @org_id, datetime('now'))`),
+  studiesByOrg: db.prepare(`
+    SELECT studies.*,
+      (SELECT COUNT(*) FROM invites WHERE study_id = studies.id AND status IN ('accepted','completed')) AS filled,
+      (SELECT COUNT(*) FROM invites WHERE study_id = studies.id AND status = 'completed') AS done
+    FROM studies WHERE org_id = ? ORDER BY id DESC`),
+  studyById: db.prepare('SELECT * FROM studies WHERE id = ?'),
+  approveStudy: db.prepare(`UPDATE studies SET status = 'open' WHERE id = ? AND status = 'submitted'`),
+  inviteAllToStudy: db.prepare(`
+    INSERT OR IGNORE INTO invites (user_id, study_id)
+    SELECT user_id, ? FROM profiles WHERE onboarded = 1`),
+
+  addQuota: db.prepare('INSERT INTO quota_lines (study_id, variable, target_count) VALUES (?, ?, ?)'),
+  quotasFor: db.prepare('SELECT * FROM quota_lines WHERE study_id = ?'),
+
+  /* Aggregate panel counts per audience variable. Researchers only ever see these numbers. */
+  panelCounts: {
+    income_under50: db.prepare(`SELECT COUNT(*) AS n FROM profiles WHERE onboarded=1 AND income_band='under50'`),
+    rural: db.prepare(`SELECT COUNT(*) AS n FROM profiles WHERE onboarded=1 AND area='rural'`),
+    multilingual: db.prepare('SELECT COUNT(*) AS n FROM profiles WHERE onboarded=1 AND languages >= 2'),
+    assistive: db.prepare('SELECT COUNT(*) AS n FROM profiles WHERE onboarded=1 AND assistive = 1'),
+    age55: db.prepare(`SELECT COUNT(*) AS n FROM profiles WHERE onboarded=1 AND age_band='55plus'`),
+    first_time: db.prepare(`
+      SELECT COUNT(*) AS n FROM profiles WHERE onboarded=1 AND user_id NOT IN
+        (SELECT user_id FROM invites WHERE status = 'completed')`)
+  },
+  panelSize: db.prepare('SELECT COUNT(*) AS n FROM profiles WHERE onboarded = 1'),
+
+  /* Sessions a researcher may see: first name + audience traits only. Never email. */
+  studySessions: db.prepare(`
+    SELECT invites.id, invites.status, invites.created_at,
+           profiles.name, profiles.income_band, profiles.area, profiles.languages,
+           profiles.assistive, profiles.age_band
+    FROM invites JOIN profiles ON profiles.user_id = invites.user_id
+    WHERE invites.study_id = ? AND invites.status IN ('accepted','completed')
+    ORDER BY invites.created_at`),
+  studyImpact: db.prepare(`
+    SELECT COALESCE(SUM(amount_cents), 0) AS total_cents, COUNT(DISTINCT ledger.cause_id) AS causes
+    FROM ledger JOIN invites ON invites.id = ledger.invite_id
+    WHERE invites.study_id = ? AND ledger.entry_type = 'contribution'`),
+  studyImpactByCause: db.prepare(`
+    SELECT causes.name, SUM(ledger.amount_cents) AS cents
+    FROM ledger JOIN invites ON invites.id = ledger.invite_id
+    JOIN causes ON causes.id = ledger.cause_id
+    WHERE invites.study_id = ? AND ledger.entry_type = 'contribution'
+    GROUP BY causes.id ORDER BY cents DESC`)
 };
 
 export const QUARTER_CAP = 6;

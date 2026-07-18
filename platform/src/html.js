@@ -30,6 +30,7 @@ export function layout({ title, body, user = null, flash = '' }) {
     <nav>
       ${user
         ? `<a href="/dashboard">Dashboard</a>
+           <a href="/researcher">Research</a>
            <form method="post" action="/signout" class="inlineform"><button class="btn btn-ghost btn-sm">Sign out</button></form>`
         : `<a class="btn btn-blue btn-sm" href="/signin">Sign in</a>`}
     </nav>
