@@ -59,6 +59,9 @@ quarter and enforced server-side on accept.
 3. Set `NODE_ENV=production`, `APP_ORIGIN`, `RESEND_API_KEY`, `MAIL_FROM`.
 4. Point `app.participantsforgood.org` at the service.
 
+Full architecture, data-model, production, and roadmap documentation lives in the
+private `docs/ARCHITECTURE.md` (kept out of this public repo).
+
 ## Not yet built (see docs/PLATFORM-PLAN.md)
 
 Quota-aware matching (approval invites all onboarded participants; quotas are tracked
